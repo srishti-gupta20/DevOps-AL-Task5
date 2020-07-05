@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prom-deploy
+  labels: 
+    tool: prometheus
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      env: prometheus
+  template:
+    metadata:
+      name: prom-pod
+      labels:
+        env: prometheus
+    spec:
+      containers: 
+        - name: prom-con
+          image: vimal13/prometheus 
+          volumeMounts:
+          - name: prom-config
+            mountPath: /etc/prometheus/prometheus.yml
+            subPath: prometheus.yml
+      volumes:
+      - name: prom-config
+        configMap:
+          name: prom-configmap
+
+

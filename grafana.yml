@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graf-deploy
+  labels:
+    tool: grafana
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      env: grafana
+  template:
+    metadata:
+      name: graf-pod
+      labels:
+        env: grafana
+    spec:
+      containers: 
+        - name: graf-con
+          image: vimal13/grafana       
+          volumeMounts:
+          - name: graf-vol1
+            mountPath: /var/lib/grafana
+      volumes:
+      - name: graf-vol1
+        persistentVolumeClaim:
+          claimName: graf-pvc1
+
+
